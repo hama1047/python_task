@@ -1,24 +1,22 @@
+import random
 
 class Card:
 #カード情報
-    self.num = ("A",2,3,4,5,6,7,8,9,10,"J","Q","K")
-    
-    def heart:
-        self.name = "H"
-    def diamond:
-        self.name = "D"
-    def club:
-        self.name = "C"
-    def spade:
-        self.name = "S"
+    num = ("A",2,3,4,5,6,7,8,9,10,"J","Q","K")
+    suit = ("club","diamond","heart","spade")
 
+#shuffle関数:100回シャッフルする
+    def shuffle(card1,card2):
+        for i in range(100):
+            n = card2
+            card2 = card1
+            card1 = n
 #disp変数：カード枚数を表示させる
     def disp(dealer_sheets_num):
-        for dealer_sheets_num in dealer_sheets_num < dealer_sheets_num:
-            print("player: {0}, dealer: {1}".format(dealer_sheets_num,dealer_sheets_num))
-#num変数:cardが絵札なら10代入,Aなら11代入
-    def num(card):
-        if card == "J" || "Q" || "K":
+        print("dealer: {0}".format(dealer_sheets_num))
+#num_change変数:cardが絵札なら10代入,Aなら11代入
+    def num_change(card):
+        if card == "J" or "Q" or "K":
             card = 10
         if card == "A":
             card = 11
