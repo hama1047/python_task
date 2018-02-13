@@ -1,49 +1,130 @@
 from card import Card
+from collections import Counter
 import random
+
 
 
 #辞書型(手札)
 dealer = {}
 player = {}
+card_log = {}
+#宣言
+dealer_sum = 0
+player_sum = 0
 
 BJ = Card()
 print("--BJゲーム開始--")
-print(BJ.suit[1])
-
 
 #手札を２枚入れる処理を書く
+#合計数を計算
 for i in range(2):
-    card_num = random.randint(0,12)
-    card_suit = random.randint(0,3)
+    ##------カードを引く流れ(dealer)------
+    card_num = BJ.shuffle_num()
+    card_suit = BJ.shuffle_suit()
+    #↓log
+    while True:
+        if True == card_num in card_log.keys():
+            if True == card_suit in card_log.values():
+                card_num = BJ.shuffle_num()
+                card_suit = BJ.shuffle_suit()
+        else: 
+            card_log.setdefault(Card.num[card_num], Card.suit[card_suit])
+            break
+
     dealer.setdefault(Card.num[card_num], Card.suit[card_suit])
-    card_num = random.randint(0,12)
-    card_suit = random.randint(0,3)
+    dealer_sum  = dealer_sum + BJ.num_change(Card.num[card_num])
+    #↓Aを1として数える
+    if True == 'A' in dealer.keys() and dealer_sum > 22:
+        c = Counter(dealer)
+        dealer_sum = dealer_sum - c['A']*10
+    ##-------ここまで---------
+
+    ##------カードを引く流れ(player)------ 
+    card_num = BJ.shuffle_num()
+    card_suit = BJ.shuffle_suit()
+    #↓log
+    while True:
+        if True == card_num in card_log.keys() and True == card_suit in card_log.values():
+            card_num = BJ.shuffle_num()
+            card_suit = BJ.shuffle_suit()
+        else:
+            card_log.setdefault(Card.num[card_num], Card.suit[card_suit])
+            break
+
+    player_sum = player_sum + BJ.num_change(Card.num[card_num])
+    #↓Aの変換
+    if True == 'A' in player.keys() and player_sum > 22:
+        c = Counter(player)
+        player_sum = player_sum -  c['A']*10
     player.setdefault(Card.num[card_num], Card.suit[card_suit])
+    ##-------ここまで---------                                                             
 
 while True:
-
-    #BJ.disp(len(dealer))←合計数を表示させる処理
+    
+    if dealer_sum > 21 or player_sum > 21:
+        break
     print("あなたの手札です↓")
-    print(player)
+    print("{0}合計:{1}".format(player,player_sum))#合計表示
     print("相手の手札です↓")
-    print(dealer)
+    print("{0}合計:{1}".format(dealer,dealer_sum))#合計表示
 
     print("もう１枚カードを引く？ yes:1,no:2")
-    ans = int(input())
+    ans = int(input())    
+
+    #BJ.enemy_brain(dealer_sum)
+    ##------カードを引く流れ------ 
+    if dealer_sum < 17:
+        card_num = BJ.shuffle_num()
+        card_suit = BJ.shuffle_suit()
+    #↓log 
+        while True:
+            if True == card_num in card_log.keys() and True == card_suit in card_log.values():
+                card_num = BJ.shuffle_num()
+                card_suit = BJ.shuffle_suit()
+            else:
+                card_log.setdefault(Card.num[card_num], Card.suit[card_suit])
+                break
+        dealer.setdefault(Card.num[card_num], Card.suit[card_suit])
+        dealer_sum = dealer_sum + BJ.num_change(Card.num[card_num])
+    #↓Aの変換
+        if True == 'A' in dealer.keys() and dealer_sum > 22:
+            c = Counter(dealer)
+            dealer_sum = dealer_sum - c['A']*10
+            dealer.setdefault(Card.num[card_num], Card.suit[card_suit])
+   ##-------ここまで--------- 
+
 
     if ans == 1:
-        card_num = random.randint(0,12)
-        card_suit = random.randint(0,3)
-        player.setdefault(BJ.num[card_num], BJ.suit[card_suit])
+    ##------カードを引く流れ------ 
+        card_num = BJ.shuffle_num()
+        card_suit = BJ.shuffle_suit()
+        #↓log                                                                                    
+        while True:
+            if True == card_num in card_log.keys() and True == card_suit in card_log.values():
+                card_num = BJ.shuffle_num()
+                card_suit = BJ.shuffle_suit()
+            else:
+                card_log.setdefault(Card.num[card_num], Card.suit[card_suit])
+                break
+            
+        player_sum = player_sum + BJ.num_change(Card.num[card_num])
+        #↓Aの変換                                                                                 
+        if True == 'A' in dealer.keys() and player_sum > 22:
+            c = Counter(player)
+            player_sum = player_sum - c['A']*10
+        player.setdefault(Card.num[card_num], Card.suit[card_suit])
+    ##-------ここまで--------- 
+
     elif ans == 2:
         break
     else:
         print("1か2で答えてください")
 
-#↑ここまでできた(合計を表示させる)
-#dealerは16以下なら次のカードを引く17以上はそのまま
-#↓判定する処理を書き換える
 result = BJ.hantei(player_sum,dealer_sum)
+print("あなたの手札です↓")
+print("{0}合計:{1}".format(player,player_sum))#合計表示                                        
+print("相手の手札です↓")
+print("{0}合計:{1}".format(dealer,dealer_sum))#合計表示 
 #if文でどっちが勝ったか表示
 if result == 1:
     print("あなたの負けです。")
