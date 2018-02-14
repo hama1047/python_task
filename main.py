@@ -23,20 +23,23 @@ for i in range(2):
     card_suit = BJ.shuffle_suit()
     #↓log
     while True:
+
         if True == card_num in card_log.keys():
             if True == card_suit in card_log.values():
                 card_num = BJ.shuffle_num()
                 card_suit = BJ.shuffle_suit()
         else: 
             card_log.setdefault(Card.num[card_num], Card.suit[card_suit])
+            dealer.setdefault(Card.num[card_num], Card.suit[card_suit])
             break
 
     dealer.setdefault(Card.num[card_num], Card.suit[card_suit])
     dealer_sum  = dealer_sum + BJ.num_change(Card.num[card_num])
     #↓Aを1として数える
-    if True == 'A' in dealer.keys() and dealer_sum > 22:
-        c = Counter(dealer)
-        dealer_sum = dealer_sum - c['A']*10
+    if True == dealer_sum > 22:
+        if True == 'A' in dealer.keys():
+            c = Counter(dealer)
+            dealer_sum = dealer_sum - c['A']*10
     ##-------ここまで---------
 
     ##------カードを引く流れ(player)------ 
@@ -44,29 +47,34 @@ for i in range(2):
     card_suit = BJ.shuffle_suit()
     #↓log
     while True:
-        if True == card_num in card_log.keys() and True == card_suit in card_log.values():
-            card_num = BJ.shuffle_num()
-            card_suit = BJ.shuffle_suit()
+        if True == card_num in card_log.keys():
+            if True == card_suit in card_log.values():
+                card_num = BJ.shuffle_num()
+                card_suit = BJ.shuffle_suit()
         else:
             card_log.setdefault(Card.num[card_num], Card.suit[card_suit])
+            player.setdefault(Card.num[card_num], Card.suit[card_suit])
             break
 
     player_sum = player_sum + BJ.num_change(Card.num[card_num])
     #↓Aの変換
-    if True == 'A' in player.keys() and player_sum > 22:
-        c = Counter(player)
-        player_sum = player_sum -  c['A']*10
+    if True == player_sum > 22:
+        if True == 'A' in player.keys():
+            c = Counter(player)
+            player_sum = player_sum - c['A']*10
+
     player.setdefault(Card.num[card_num], Card.suit[card_suit])
     ##-------ここまで---------                                                             
 
 while True:
-    
+
     if dealer_sum > 21 or player_sum > 21:
         break
     print("あなたの手札です↓")
     print("{0}合計:{1}".format(player,player_sum))#合計表示
     print("相手の手札です↓")
     print("{0}合計:{1}".format(dealer,dealer_sum))#合計表示
+
 
     print("もう１枚カードを引く？ yes:1,no:2")
     ans = int(input())    
@@ -78,19 +86,22 @@ while True:
         card_suit = BJ.shuffle_suit()
     #↓log 
         while True:
-            if True == card_num in card_log.keys() and True == card_suit in card_log.values():
-                card_num = BJ.shuffle_num()
-                card_suit = BJ.shuffle_suit()
+            if True == card_num in card_log.keys():
+                if True == card_suit in card_log.values():
+                    card_num = BJ.shuffle_num()
+                    card_suit = BJ.shuffle_suit()
             else:
                 card_log.setdefault(Card.num[card_num], Card.suit[card_suit])
+                dealer.setdefault(Card.num[card_num], Card.suit[card_suit])
                 break
         dealer.setdefault(Card.num[card_num], Card.suit[card_suit])
         dealer_sum = dealer_sum + BJ.num_change(Card.num[card_num])
     #↓Aの変換
-        if True == 'A' in dealer.keys() and dealer_sum > 22:
-            c = Counter(dealer)
-            dealer_sum = dealer_sum - c['A']*10
-            dealer.setdefault(Card.num[card_num], Card.suit[card_suit])
+        if True == dealer_sum > 22:
+            if True == 'A' in dealer.keys():
+                c = Counter(dealer)
+                dealer_sum = dealer_sum - c['A']*10
+        dealer.setdefault(Card.num[card_num], Card.suit[card_suit])
    ##-------ここまで--------- 
 
 
@@ -100,18 +111,21 @@ while True:
         card_suit = BJ.shuffle_suit()
         #↓log                                                                                    
         while True:
-            if True == card_num in card_log.keys() and True == card_suit in card_log.values():
-                card_num = BJ.shuffle_num()
-                card_suit = BJ.shuffle_suit()
+            if True == card_num in card_log.keys():
+                if True == card_suit in card_log.values():
+                    card_num = BJ.shuffle_num()
+                    card_suit = BJ.shuffle_suit()
             else:
                 card_log.setdefault(Card.num[card_num], Card.suit[card_suit])
+                player.setdefault(Card.num[card_num], Card.suit[card_suit])
                 break
             
         player_sum = player_sum + BJ.num_change(Card.num[card_num])
         #↓Aの変換                                                                                 
-        if True == 'A' in dealer.keys() and player_sum > 22:
-            c = Counter(player)
-            player_sum = player_sum - c['A']*10
+        if True == player_sum > 22:
+            if True == 'A' in player.keys():
+                c = Counter(player)
+                player_sum = player_sum - c['A']*10
         player.setdefault(Card.num[card_num], Card.suit[card_suit])
     ##-------ここまで--------- 
 
